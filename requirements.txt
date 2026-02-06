@@ -1,0 +1,31 @@
+# Core API Framework
+fastapi==0.112.2
+pydantic==2.8.2
+uvicorn==0.30.6
+
+# Web Scraping & Parsing
+requests==2.32.3
+beautifulsoup4==4.12.3
+lxml==5.1.0
+
+# NLP & Text Processing
+spacy==3.7.2
+scikit-learn==1.4.0
+nltk==3.8.1
+
+# Data Processing
+numpy==1.26.3
+pandas==2.2.0
+
+# PDF Processing (for resume parsing)
+PyPDF2==3.0.1
+python-docx==1.1.0
+
+# Utilities
+python-multipart==0.0.6
+aiofiles==23.2.1
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-asyncio==0.21.1
