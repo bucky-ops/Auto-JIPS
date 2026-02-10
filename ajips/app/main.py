@@ -6,6 +6,8 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
 from ajips.app.api.routes import router as api_router
 from ajips.app.config import settings
@@ -25,16 +27,14 @@ else:
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 
+# Initialize SlowAPI limiter
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(
     title=settings.API_TITLE,
     version=settings.API_VERSION,
     description=settings.API_DESCRIPTION,
 )
-
-# Store startup time for health checks
-import time
-
-app.state.startup_time = time.time()
 
 # CORS configuration from environment
 app.add_middleware(
@@ -45,7 +45,8 @@ app.add_middleware(
     allow_headers=settings.CORS_ALLOW_HEADERS,
 )
 
-# Include API routes
+# Include API routes with slowapi state
+app.state.limiter = limiter
 app.include_router(api_router)
 
 

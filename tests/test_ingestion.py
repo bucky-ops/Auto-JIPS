@@ -7,7 +7,6 @@ import urllib.parse
 from ajips.app.services.ingestion import (
     fetch_job_posting,
     _is_safe_url,
-    ALLOWED_NETLOCS,
 )
 
 
