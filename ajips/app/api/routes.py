@@ -16,8 +16,7 @@ logger = logging.getLogger(__name__)
 # Rate limiting with per-IP key
 limiter = Limiter(key_func=get_remote_address)
 router = APIRouter()
-# Note: router.state is set on the FastAPI app instance; handlers are registered via app state in main.py
-router.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+# Note: exception handlers must be registered on the FastAPI app instance; see main.py
 
 
 @router.get("/health")

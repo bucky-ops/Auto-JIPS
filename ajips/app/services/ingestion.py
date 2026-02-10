@@ -34,12 +34,11 @@ def _is_safe_url(url: str, allowed_netlocs: Optional[list] = None) -> bool:
             return False
     except ValueError:
         pass  # Not an IP address; continue
-    # Optional hostname allowlist
-    if allowed_netlocs and not any(
-        hostname.endswith(netloc) for netloc in allowed_netlocs
-    ):
-        # If allowlist is empty, allow any non-private hostname
-        pass
+    # Optional hostname allowlist: if non-empty, only allow matching domains
+    if allowed_netlocs:
+        if not any(hostname.endswith(netloc) for netloc in allowed_netlocs):
+            return False
+    # If allowlist is empty, allow any non-private hostname
     return True
 
 
