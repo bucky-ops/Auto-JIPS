@@ -2,23 +2,34 @@
 
 from enum import Enum
 
+
 class SeverityLevel(str, Enum):
     """Critique severity levels."""
+
     INFO = "info"
     WARNING = "warning"
     CRITICAL = "critical"
 
-# Salary extraction patterns
+
+# Salary extraction patterns (order matters: more specific patterns first)
 SALARY_PATTERNS = [
-    r'\$(\d+(?:,\d{3})*(?:\.\d{2})?)\s*(?:to|-|–)\s*\$?(\d+(?:,\d{3})*(?:\.\d{2})?)',
-    r'\$(\d+)k?\s*(?:to|-|–)\s*\$?(\d+)k?',
-    r'(\d+)k?\s*(?:to|-|–)\s*(\d+)k?',
+    # $120k-$160k or 120k-160k or $120k-$160k/year
+    r"\$?(\d+(?:,\d{3})*)k\s*(?:to|-|–)\s*\$?(\d+(?:,\d{3})*)k",
+    r"\$?(\d+(?:,\d{3})*)k",
+    # Standard dollar ranges $120,000-$160,000
+    r"\$(\d+(?:,\d{3})*(?:\.\d{2})?)\s*(?:to|-|–)\s*\$?(\d+(?:,\d{3})*(?:\.\d{2})?)",
+    r"\$(\d+(?:,\d{3})*(?:\.\d{2})?)",
 ]
 
 # Interview stage keywords
 INTERVIEW_STAGES = {
     "phone": ["phone screen", "phone interview", "phone call", "screening call"],
-    "technical": ["technical interview", "coding interview", "technical assessment", "coding challenge"],
+    "technical": [
+        "technical interview",
+        "coding interview",
+        "technical assessment",
+        "coding challenge",
+    ],
     "system_design": ["system design", "architecture", "design interview"],
     "behavioral": ["behavioral interview", "culture fit", "final round", "onsite"],
 }

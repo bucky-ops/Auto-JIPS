@@ -1,0 +1,39 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run tests
+      run: |
+        pytest --cov=ajips --cov-report=term-missing
+    - name: Build Docker image
+      run: |
+        docker build -t ajips:${{ github.sha }} .
+        docker tag ajips:${{ github.sha }} ajips:latest
+    - name: Push to registry (example placeholder)
+      run: |
+        echo "Docker push step goes here; configure registry auth and push."
+    - name: Deploy to production (placeholder)
+      run: |
+        echo "Deployment step goes here; e.g., kubectl apply or cloud provider CLI."

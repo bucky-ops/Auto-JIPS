@@ -25,10 +25,27 @@ class CritiqueItem(BaseModel):
 
 
 class AnalyzeResponse(BaseModel):
-    title: Optional[str]
-    focus_areas: List[FocusArea]
-    explicit_skills: List[str]
-    hidden_skills: List[str]
-    critiques: List[CritiqueItem]
-    resume_alignment: Optional[float] = None
+    title: Optional[str] = Field(None, description="Extracted job title")
+    focus_areas: List[FocusArea] = Field(
+        default_factory=list, description="Primary focus areas"
+    )
+    explicit_skills: List[str] = Field(
+        default_factory=list, description="Explicitly mentioned skills"
+    )
+    hidden_skills: List[str] = Field(
+        default_factory=list, description="Inferred skills"
+    )
+    critiques: List[CritiqueItem] = Field(
+        default_factory=list, description="Job posting critiques"
+    )
+    salary_range: Optional[dict] = Field(None, description="Extracted salary range")
+    interview_stages: List[str] = Field(
+        default_factory=list, description="Detected interview stages"
+    )
+    quality_score: float = Field(
+        default=0.0, ge=0.0, le=100.0, description="Job posting quality score (0–100)"
+    )
+    resume_alignment: Optional[float] = Field(
+        None, description="Resume alignment score (0–1)"
+    )
     summary: str

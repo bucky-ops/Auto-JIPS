@@ -31,6 +31,11 @@ app = FastAPI(
     description=settings.API_DESCRIPTION,
 )
 
+# Store startup time for health checks
+import time
+
+app.state.startup_time = time.time()
+
 # CORS configuration from environment
 app.add_middleware(
     CORSMiddleware,
